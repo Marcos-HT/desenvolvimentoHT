@@ -13,21 +13,24 @@
     <header class="cabecalho">
         <nav class="cabecalho__menu">
             <a class="cabecalho__menu__link" href="index.html">Home</a>
+        <nav class="cabecalho__menu">
+            <a class="cabecalho__menu__link" href="index.html">Home</a>
             <a class="cabecalho__menu__link" href="about.html">Sobre mim</a>
             <a class="cabecalho__menu__link" href="https://hoteltechbr.com/">Site Hotel tech</a>
         </nav>
     </header>
     <main class="apresentacao">
         <section class="apresentacao__conteudo">
-            <h1 class="apresentacao__conteudo__titulo">Eleve seu negócio a outro nível <strong class="titulo-destaque">com a Hotel tech Hospitality! </strong></h1>
-        <p class="apresentacao__conteudo__texto">Olá! Esse é seu assistente de configurações remotos.</p>
+            <h1 class="apresentacao__conteudo__titulo">Eleve seu negócio a outro nível <strong
+                    class="titulo-destaque">com a Hotel tech Hospitality! </strong></h1>
+            <p class="apresentacao__conteudo__texto">Olá! Esse é seu assistente de configurações remotos.</p>
         <div class="apresentacao__links">
             <h2 class="apresentacao__links__subtitulo">Acesse as configurações</h2>
             <a class="apresentacao__links__navegacao ligar">
-                <img src="./assets/luz-on.png"> Ligar
+                <img src="./assets/wifi.png"> Ligar
             </a>
             <a class="apresentacao__links__navegacao desligar">
-                <img src="./assets/luz-off.png"> Desligar
+                <img src="./assets/info.png"> Desligar
             </a>
             <a class="apresentacao__links__navegacao status">
                 <img src="./assets/exit.png"> Status
@@ -42,47 +45,7 @@
     <footer class="rodape">
         <p>Desenvolvido por Marcos Sanchez.</p>
     </footer>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const botoes = document.querySelectorAll('.apresentacao__links__navegacao');
-
-            botoes.forEach(botao => {
-                botao.addEventListener('click', function() {
-                    const endpointMap = {
-                        'Ligar': 'turn_on',
-                        'Desligar': 'turn_off',
-                        'Status': 'status',
-                        'Update': 'update'
-                    };
-                    const endpoint = endpointMap[this.textContent.trim()];
-
-                    if (endpoint) {
-                        const url = 'http://192.168.10.108:81/' + endpoint;
-                        fetch(url)
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Erro na requisição: ' + response.status);
-                                }
-                                return response.text();
-                            })
-                            .then(data => {
-                                // Adiciona a classe temporária para o efeito visual
-                                this.classList.add('clicked');
-                                setTimeout(() => {
-                                    this.classList.remove('clicked');
-                                }, 300); // Remove a classe após 300ms
-                                console.log(data);
-                            })
-                            .catch(error => {
-                                console.error('Erro:', error);
-                            });
-                    } else {
-                        console.error("Endpoint não encontrado para o botão:", this.textContent.trim());
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="./script.js"></script>
 </body>
 
 </html>
