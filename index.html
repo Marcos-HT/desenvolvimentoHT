@@ -19,37 +19,70 @@
     </header>
     <main class="apresentacao">
         <section class="apresentacao__conteudo">
-            <h1 class="apresentacao__conteudo__titulo">Eleve seu negócio a outro nível <strong  
-            class="titulo-destaque">com a Hotel tech Hospitality!
-            </strong></h1>
-            <p class="apresentacao__conteudo__texto">Olá! Esse é seu assistente de configurações 
-                remotos.
-            </p>
-            <div class="apresentacao__links">
-                <h2 class="apresentacao__links__subtitulo">Acesse as configurações</h2>
-                <a class="apresentacao__links__navegacao" href="http://192.168.10.108:81/turn_on">
-                    <img src="./assets/wifi.png">
-                    Ligar
-                </a>
-                <a class="apresentacao__links__navegacao" href="http://192.168.10.108:81/turn_off">
-                    <img src="./assets/info.png">
-                    Desligar
-                </a>
-                <a class="apresentacao__links__navegacao" href="http://192.168.10.108:81">
-                    <img src="./assets/exit.png">
-                    Status
-                </a>
-                <a class="apresentacao__links__navegacao" href="https://hoteltechbr.com/">
-                    <img src="./assets/update.png">
-                    Update
-                </a>
-            </div>
-        </section>
-        <img class="apresentacao__imagem" src="./assets/imagem3.png" alt="Ilustração HT">
+            <h1 class="apresentacao__conteudo__titulo">Eleve seu negócio a outro nível <strong class="titulo-destaque">com a Hotel tech Hospitality! </strong></h1>
+        <p class="apresentacao__conteudo__texto">Olá! Esse é seu assistente de configurações remotos.</p>
+        <div class="apresentacao__links">
+            <h2 class="apresentacao__links__subtitulo">Acesse as configurações</h2>
+            <a class="apresentacao__links__navegacao ligar">
+                <img src="./assets/luz-on.png"> Ligar
+            </a>
+            <a class="apresentacao__links__navegacao desligar">
+                <img src="./assets/luz-off.png"> Desligar
+            </a>
+            <a class="apresentacao__links__navegacao status">
+                <img src="./assets/exit.png"> Status
+            </a>
+            <a class="apresentacao__links__navegacao update">
+                <img src="./assets/update.png"> Update
+            </a>
+        </div>
+    </section>
+    <img class="apresentacao__imagem" src="./assets/imagem3.png" alt="Ilustração HT">
     </main>
     <footer class="rodape">
         <p>Desenvolvido por Marcos Sanchez.</p>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const botoes = document.querySelectorAll('.apresentacao__links__navegacao');
+
+            botoes.forEach(botao => {
+                botao.addEventListener('click', function() {
+                    const endpointMap = {
+                        'Ligar': 'turn_on',
+                        'Desligar': 'turn_off',
+                        'Status': 'status',
+                        'Update': 'update'
+                    };
+                    const endpoint = endpointMap[this.textContent.trim()];
+
+                    if (endpoint) {
+                        const url = 'http://192.168.10.108:81/' + endpoint;
+                        fetch(url)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Erro na requisição: ' + response.status);
+                                }
+                                return response.text();
+                            })
+                            .then(data => {
+                                // Adiciona a classe temporária para o efeito visual
+                                this.classList.add('clicked');
+                                setTimeout(() => {
+                                    this.classList.remove('clicked');
+                                }, 300); // Remove a classe após 300ms
+                                console.log(data);
+                            })
+                            .catch(error => {
+                                console.error('Erro:', error);
+                            });
+                    } else {
+                        console.error("Endpoint não encontrado para o botão:", this.textContent.trim());
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
