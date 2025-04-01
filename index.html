@@ -1,76 +1,49 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+document.addEventListener('DOMContentLoaded', function() {
+    // Seleciona os botões dentro da SEGUNDA seção de botões, que contém os botões da configuração de luz.
+    const botoesLuz = document.querySelectorAll('.apresentacao__links__botoes-secao:nth-child(1) .apresentacao__links__navegacao');
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre mim</title>
-    <link rel="stylesheet" href="./styles/style.css">
-</head>
+    botoesLuz.forEach(botao => {
+        botao.addEventListener('click', function() {
+            // Mapeia os nomes dos botões para os endpoints corretos
+            const endpointMapLuz = {
+                'On': 'turn_on',
+                'Off': 'turn_off',
+                'Status': 'status',
+                'Update': 'update'
+            };
+            const endpoint = endpointMapLuz[this.textContent.trim()]; // Obtém o endpoint correspondente ao texto do botão
 
-<body>
-    <header class="cabecalho">
-        <nav class="cabecalho__menu">
-            <a class="cabecalho__menu__link" href="index.html">Home</a>
-            <a class="cabecalho__menu__link" href="about.html">
-                Sobre mim</a>
-        </nav>
-    </header>
+            if (endpoint) {
+                let url = 'http://192.168.10.108:81/' + endpoint; // URL base para os botões de luz
 
-    <main class="apresentacao">
-        <section class="apresentacao__conteudo">
-            <h1 class="apresentacao__conteudo__titulo">Bem-vindo <strong
-                class="titulo-destaque">Hoteltech
-            </strong></h1>
-            <p class="apresentacao__conteudo__texto"> Transforme a experiência dos seus hóspedes com soluções tecnológicas inovadoras.  
-            </p>
-            <p class="apresentacao__conteudo__texto">
-                  
-                Imagine um hotel onde a tecnologia trabalha a seu favor, proporcionando
-                uma experiência sem igual aos seus hóspedes. Ao escolher a Hotel Tech,
-                você se beneficia de um atendimento de excelência, soluções inovadoras e
-                suporte técnico que realmente faz a diferença.
-            </p>
-            <div class="apresentacao__links">
-                <h2 class="apresentacao__links__subtitulo">Configurações Luz</h2>
-                <div class="apresentacao__links__botoes-secao">
-                    <a class="apresentacao__links__navegacao ligar">
-                        <img src="./assets/luz-on.png"> On
-                    </a>
-                    <a class="apresentacao__links__navegacao desligar">
-                        <img src="./assets/luz-off.png"> Off
-                    </a>
-                    <a class="apresentacao__links__navegacao status">
-                        <img src="./assets/exit.png"> Status
-                    </a>
-                    <a class="apresentacao__links__navegacao update">
-                        <img src="./assets/update.png"> Update
-                    </a>
-                </div>
-                <h2 class="apresentacao__links__subtitulo">Configurações Ar</h2>
-                <div class="apresentacao__links__botoes-secao">
-                    <a class="apresentacao__links__navegacao novo-botao">
-                        <img src="./assets/ar-on.png"> On
-                    </a>
-                    <a class="apresentacao__links__navegacao novo-botao">
-                        <img src="./assets/ar-off.png"> Off
-                    </a>
-                    <a class="apresentacao__links__navegacao novo-botao">
-                        <img src="./assets/mais.png"> Ar
-                    </a>
-                    <a class="apresentacao__links__navegacao novo-botao">
-                        <img src="./assets/menos.png"> Ar
-                    </a>
-                </div>
-            </div>
-        </section>
-        <img class="apresentacao__imagem" src="./assets/imagem3.png" alt="Foto da Joana Santos programando">
-    </main>
+                // Se o botão for "Update", use um IP/URL diferente (SE NECESSÁRIO)
+                if (endpoint === 'update') {
+                    url = 'http://192.168.10.109:8080/update'; // Substitua pelo IP/Porta correto para o botão Update (se diferente)
+                }
 
-    <footer class="rodape">
-        <p>Desenvolvido por Marcos Sanchez.</p>
-    </footer>
-</body>
+                // Faz a requisição HTTP (fetch)
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erro na requisição: ' + response.status);
+                        }
+                        return response.text(); // Obtém o corpo da resposta como texto
+                    })
+                    .then(data => {
+                        // Aplica um efeito visual de "clique" ao botão
+                        this.classList.add('clicked');
+                        setTimeout(() => {
+                            this.classList.remove('clicked');
+                        }, 300);
 
-</html>
+                        console.log(data); // Exibe os dados da resposta no console (para fins de depuração)
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error); // Exibe erros no console
+                    });
+            } else {
+                console.error("Endpoint não encontrado para o botão:", this.textContent.trim()); // Exibe um erro se o endpoint não for encontrado
+            }
+        });
+    });
+});
