@@ -7,12 +7,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 'Ligar': 'turn_on',
                 'Desligar': 'turn_off',
                 'Status': 'status',
-                'Update': 'update'
+                'Update': 'update',
+                'Novo 1': 'novo1',
+                'Novo 2': 'novo2',
+                'Novo 3': 'novo3',
+                'Novo 4': 'novo4'
             };
             const endpoint = endpointMap[this.textContent.trim()];
 
             if (endpoint) {
-                const url = 'http://192.168.10.108:81/' + endpoint;
+                const url = 'http://SEU_ENDERECO_PUBLICO/' + endpoint; // Substitua pelo endereço público
                 fetch(url)
                     .then(response => {
                         if (!response.ok) {
@@ -21,11 +25,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         return response.text();
                     })
                     .then(data => {
-                        // Adiciona a classe temporária para o efeito visual
                         this.classList.add('clicked');
                         setTimeout(() => {
                             this.classList.remove('clicked');
-                        }, 300); // Remove a classe após 300ms
+                        }, 300);
                         console.log(data);
                     })
                     .catch(error => {
