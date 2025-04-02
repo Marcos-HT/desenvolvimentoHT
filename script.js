@@ -14,11 +14,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const endpoint = endpointMapLuz[this.textContent.trim()]; // Obtém o endpoint correspondente ao texto do botão
 
             if (endpoint) {
-                let url = 'http://192.168.10.108:81/' + endpoint; // URL base para os botões de luz
+                let url = 'https://192.168.10.108:81/' + endpoint; // URL base para os botões de luz
 
                 // Se o botão for "Update", use um IP/URL diferente (SE NECESSÁRIO)
                 if (endpoint === 'update') {
-                    url = 'http://192.168.10.108:8080/update'; // Substitua pelo IP/Porta correto para o botão Update (se diferente)
+                    url = 'https://192.168.10.108:8080/update'; // Substitua pelo IP/Porta correto para o botão Update (se diferente)
                 }
 
                 // Faz a requisição HTTP (fetch)
